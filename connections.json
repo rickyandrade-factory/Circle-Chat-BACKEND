@@ -1,0 +1,51 @@
+{
+    "puneet": {
+        "pwd": "abc@123",
+        "userData": {
+            "rooms" : ["raders-lounge", "market-analysis", "customers", "dev-chat", "golden-circle"],
+            "first_name": "Puneet",
+            "last_name": "Sethi",
+            "email": "puneet@gmail.com",
+            "id": 1
+        }
+    },
+    "ricky" : {
+        "pwd": "abc@123",
+        "userData": {
+            "rooms": ["raders-lounge", "market-analysis", "customers", "dev-chat", "golden-circle"],
+            "first_name": "Ricky",
+            "last_name": "Andrade",
+            "email": "ricky@gmail.com",
+            "id": 2        }
+    },
+    "mohit" : {
+        "pwd": "abc@123",
+        "userData": {
+            "rooms" : ["raders-lounge", "market-analysis"],
+            "first_name": "Mohit",
+            "last_name": "Sethi",
+            "email": "mohit@gmail.com",
+            "id": 3
+        }
+    },
+    "john": {
+        "pwd": "abc@123",
+        "userData": {
+            "rooms": ["raders-lounge"],
+            "first_name": "John",
+            "last_name": "Smith",
+            "email": "john@gmail.com",
+            "id": 4
+        }
+    },
+    "trump" : {
+        "pwd": "abc@123",
+        "userData": {
+            "rooms": [], 
+            "first_name": "Donald",
+            "last_name": "Trump",
+            "email": "donald@trump.com",
+            "id": 5
+        }
+    }
+}
