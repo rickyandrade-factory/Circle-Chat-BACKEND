@@ -2,26 +2,193 @@
     "puneet": {
         "pwd": "abc@123",
         "userData": {
-            "rooms" : ["raders-lounge", "market-analysis", "customers", "dev-chat", "golden-circle"],
+            "rooms": [{
+                    "id": 1,
+                    "isActive": true,
+                    "roomUsername": "onpoint-fx-signals",
+                    "roomTitle": "On Point FX Signal"
+                },
+
+                {
+                    "id": 2,
+                    "isActive": true,
+                    "roomUsername": "suggestion-bugs",
+                    "roomTitle": "suggestions/bug Reports"
+                },
+                {
+                    "id": 3,
+                    "isActive": true,
+                    "roomUsername": "private-forex-mentoring",
+                    "roomTitle": "Private Forex Mentoring"
+                },
+                {
+                    "id": 4,
+                    "isActive": true,
+                    "roomUsername": "7day-private-training",
+                    "roomTitle": "7 DAY INTENSE PRIVATE TRAINING"
+                },
+                {
+                    "id": 5,
+                    "isActive": true,
+                    "roomUsername": "official-partners",
+                    "roomTitle": "OFFICIAL PARTNERS"
+                },
+                {
+                    "id": 6,
+                    "isActive": true,
+                    "roomUsername": "golden-circle",
+                    "roomTitle": "The Golden circle"
+                },
+                {
+                    "id": 7,
+                    "isActive": true,
+                    "roomUsername": "prazise-fx-signal",
+                    "roomTitle": "PRÄZISE FX SIGNALS"
+                },
+                {
+                    "id": 8,
+                    "isActive": true,
+                    "roomUsername": "website-testing",
+                    "roomTitle": "WEBSITE TESTING A/B"
+                },
+                {
+                    "id": 9,
+                    "isActive": true,
+                    "roomTitle": "chat-dev",
+                    "roomUsername": "chat-dev"
+                }
+            ],
             "first_name": "Puneet",
             "last_name": "Sethi",
             "email": "puneet@gmail.com",
             "id": 1
         }
     },
-    "ricky" : {
+    "ricky": {
         "pwd": "abc@123",
         "userData": {
-            "rooms": ["raders-lounge", "market-analysis", "customers", "dev-chat", "golden-circle"],
+            "rooms": [{
+                    "id": 1,
+                    "isActive": true,
+                    "roomUsername": "onpoint-fx-signals",
+                    "roomTitle": "On Point FX Signal"
+                },
+
+                {
+                    "id": 2,
+                    "isActive": true,
+                    "roomUsername": "suggestion-bugs",
+                    "roomTitle": "suggestions/bug Reports"
+                },
+                {
+                    "id": 3,
+                    "isActive": true,
+                    "roomUsername": "private-forex-mentoring",
+                    "roomTitle": "Private Forex Mentoring"
+                },
+                {
+                    "id": 4,
+                    "isActive": true,
+                    "roomUsername": "7day-private-training",
+                    "roomTitle": "7 DAY INTENSE PRIVATE TRAINING"
+                },
+                {
+                    "id": 5,
+                    "isActive": true,
+                    "roomUsername": "official-partners",
+                    "roomTitle": "OFFICIAL PARTNERS"
+                },
+                {
+                    "id": 6,
+                    "isActive": true,
+                    "roomUsername": "golden-circle",
+                    "roomTitle": "The Golden circle"
+                },
+                {
+                    "id": 7,
+                    "isActive": true,
+                    "roomUsername": "prazise-fx-signal",
+                    "roomTitle": "PRÄZISE FX SIGNALS"
+                },
+                
+                {
+                    "id": 8,
+                    "isActive": true,
+                    "roomUsername": "website-testing",
+                    "roomTitle": "WEBSITE TESTING A/B"
+                },
+                {
+                    "id": 9,
+                    "isActive": true,
+                    "roomTitle": "CHAT DEV ",
+                    "roomUsername": "chat-dev"
+                }
+            ],
             "first_name": "Ricky",
             "last_name": "Andrade",
             "email": "ricky@gmail.com",
-            "id": 2        }
+            "id": 2
+        }
     },
-    "mohit" : {
+    "mohit": {
         "pwd": "abc@123",
         "userData": {
-            "rooms" : ["raders-lounge", "market-analysis"],
+            "rooms": [{
+                    "id": 1,
+                    "isActive": true,
+                    "roomUsername": "onpoint-fx-signals",
+                    "roomTitle": "On Point FX Signal"
+                },
+
+                {
+                    "id": 2,
+                    "isActive": false,
+                    "roomUsername": "suggestion-bugs",
+                    "roomTitle": "suggestions/bug Reports"
+                },
+                {
+                    "id": 3,
+                    "isActive": false,
+                    "roomUsername": "private-forex-mentoring",
+                    "roomTitle": "Private Forex Mentoring"
+                },
+                {
+                    "id": 4,
+                    "isActive": false,
+                    "roomUsername": "7day-private-training",
+                    "roomTitle": "7 DAY INTENSE PRIVATE TRAINING"
+                },
+                {
+                    "id": 5,
+                    "isActive": false,
+                    "roomUsername": "official-partners",
+                    "roomTitle": "OFFICIAL PARTNERS"
+                },
+                {
+                    "id": 6,
+                    "isActive": false,
+                    "roomUsername": "golden-circle",
+                    "roomTitle": "The Golden circle"
+                },
+                {
+                    "id": 7,
+                    "isActive": false,
+                    "roomUsername": "prazise-fx-signal",
+                    "roomTitle": "PRÄZISE FX SIGNALS"
+                },
+                {
+                    "id": 8,
+                    "isActive": false,
+                    "roomUsername": "website-testing",
+                    "roomTitle": "WEBSITE TESTING A/B"
+                },
+                {
+                    "id": 9,
+                    "isActive": false,
+                    "roomTitle": "CHAT DEV ",
+                    "roomUsername": "chat-dev"
+                }
+            ],
             "first_name": "Mohit",
             "last_name": "Sethi",
             "email": "mohit@gmail.com",
@@ -31,17 +198,127 @@
     "john": {
         "pwd": "abc@123",
         "userData": {
-            "rooms": ["raders-lounge"],
+            "rooms": [{
+                    "id": 1,
+                    "isActive": true,
+                    "roomUsername": "onpoint-fx-signals",
+                    "roomTitle": "On Point FX Signal"
+                },
+
+                {
+                    "id": 2,
+                    "isActive": true,
+                    "roomUsername": "suggestion-bugs",
+                    "roomTitle": "suggestions/bug Reports"
+                },
+                {
+                    "id": 3,
+                    "isActive": true,
+                    "roomUsername": "private-forex-mentoring",
+                    "roomTitle": "Private Forex Mentoring"
+                },
+                {
+                    "id": 4,
+                    "isActive": false,
+                    "roomUsername": "7day-private-training",
+                    "roomTitle": "7 DAY INTENSE PRIVATE TRAINING"
+                },
+                {
+                    "id": 5,
+                    "isActive": false,
+                    "roomUsername": "official-partners",
+                    "roomTitle": "OFFICIAL PARTNERS"
+                },
+                {
+                    "id": 6,
+                    "isActive": false,
+                    "roomUsername": "golden-circle",
+                    "roomTitle": "The Golden circle"
+                },
+                {
+                    "id": 7,
+                    "isActive": false,
+                    "roomUsername": "prazise-fx-signal",
+                    "roomTitle": "PRÄZISE FX SIGNALS"
+                },
+                {
+                    "id": 8,
+                    "isActive": false,
+                    "roomUsername": "website-testing",
+                    "roomTitle": "WEBSITE TESTING A/B"
+                },
+                {
+                    "id": 9,
+                    "isActive": false,
+                    "roomTitle": "CHAT DEV ",
+                    "roomUsername": "chat-dev"
+                }
+            ],
             "first_name": "John",
             "last_name": "Smith",
             "email": "john@gmail.com",
             "id": 4
         }
     },
-    "trump" : {
+    "trump": {
         "pwd": "abc@123",
         "userData": {
-            "rooms": [], 
+            "rooms": [{
+                    "id": 1,
+                    "isActive": false,
+                    "roomUsername": "onpoint-fx-signals",
+                    "roomTitle": "On Point FX Signal"
+                },
+
+                {
+                    "id": 2,
+                    "isActive": false,
+                    "roomUsername": "suggestion-bugs",
+                    "roomTitle": "suggestions/bug Reports"
+                },
+                {
+                    "id": 3,
+                    "isActive": false,
+                    "roomUsername": "private-forex-mentoring",
+                    "roomTitle": "Private Forex Mentoring"
+                },
+                {
+                    "id": 4,
+                    "isActive": false,
+                    "roomUsername": "7day-private-training",
+                    "roomTitle": "7 DAY INTENSE PRIVATE TRAINING"
+                },
+                {
+                    "id": 5,
+                    "isActive": false,
+                    "roomUsername": "official-partners",
+                    "roomTitle": "OFFICIAL PARTNERS"
+                },
+                {
+                    "id": 6,
+                    "isActive": false,
+                    "roomUsername": "golden-circle",
+                    "roomTitle": "The Golden circle"
+                },
+                {
+                    "id": 7,
+                    "isActive": false,
+                    "roomUsername": "prazise-fx-signal",
+                    "roomTitle": "PRÄZISE FX SIGNALS"
+                },
+                {
+                    "id": 8,
+                    "isActive": false,
+                    "roomUsername": "website-testing",
+                    "roomTitle": "WEBSITE TESTING A/B"
+                },
+                {
+                    "id": 9,
+                    "isActive": false,
+                    "roomTitle": "CHAT DEV ",
+                    "roomUsername": "chat-dev"
+                }
+            ],
             "first_name": "Donald",
             "last_name": "Trump",
             "email": "donald@trump.com",

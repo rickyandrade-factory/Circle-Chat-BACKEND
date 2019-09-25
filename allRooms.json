@@ -1,0 +1,53 @@
+[
+    {
+        "id": 1,
+        "roomUsername": "onpoint-fx-signals",
+        "roomTitle": "On Point FX Signal"
+    },
+    
+    {
+        "id": 2,
+        "roomUsername": "suggestion-bugs",
+        "roomTitle": "suggestions/bug Reports"
+    },
+    {
+        "id": 3,
+        "roomUsername": "private-forex-mentoring",
+        "roomTitle": "Private Forex Mentoring"
+    },
+    {
+        "id": 4,
+        "roomUsername": "7day-private-training",
+        "roomTitle": "7 DAY INTENSE PRIVATE TRAINING"
+    },
+    {
+        "id": 5,
+        "roomUsername": "official-partners",
+        "roomTitle": "OFFICIAL PARTNERS"
+    },
+    {
+        "id": 6,
+        "roomUsername": "golden-circle",
+        "roomTitle": "The Golden circle"
+    },
+    {
+        "id": 7,
+        "roomUsername": "prazise-fx-signal",
+        "roomTitle": "PRÄZISE FX SIGNALS"
+    },
+    {
+        "id": 8,
+        "roomUsername": "on-point-fx-singal",
+        "roomTitle": "On Point FX Signal"
+    },
+    {
+        "id": 9,
+        "roomUsername": "website-testing",
+        "roomTitle": "WEBSITE TESTING A/B"
+    },
+    {
+        "id": 10,
+        "roomTitle": "CHAT DEV ",
+        "roomUsername": "chat-dev"
+    }
+]
