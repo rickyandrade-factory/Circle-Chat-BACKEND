@@ -3,6 +3,6 @@
     "mongodb": {
         "host": "localhost",
         "port": "27017",
-        "database": "tagchat_v1"
+        "database": "circlechats_v1"
     }
 }
