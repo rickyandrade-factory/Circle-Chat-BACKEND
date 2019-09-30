@@ -66,7 +66,8 @@ RoomMessagesSchema.statics.getHistory = function(data, callback) {
         doc_id: 1,
         "userinfo._id": 1,
         "userinfo.firstname": 1,
-        "userinfo.lastname": 1
+        "userinfo.lastname": 1,
+        "userinfo.username": 1
       }
     },
     {
@@ -85,11 +86,8 @@ RoomMessagesSchema.statics.getHistory = function(data, callback) {
 
 RoomMessagesSchema.statics.addMessage = function(message, callback) {
   roomMessageSchema = new RoomMessages(message);
-  console.log("------------------");
-  console.log(message);
   var error = roomMessageSchema.validateSync();
   if (error) {
-    console.log(error);
     callback(true, {
       error: error.errors[Object.keys(error.errors)[0]].message
     });
@@ -106,13 +104,12 @@ RoomMessagesSchema.statics.addMessage = function(message, callback) {
           userinfo: {
             _id: user._id,
             firstname: user.firstname,
-            lastname: user.lastname
+            lastname: user.lastname,
+            username: user.username
           }
         };
         callback(false, { data: data });
       } else {
-        console.log("Error in console.log(roomMessageSchema);");
-        console.log(roomMessageSchema);
         callback(false, { data: roomMessageSchema });
       }
     });

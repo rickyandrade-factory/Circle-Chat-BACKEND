@@ -12,64 +12,67 @@ module.exports = function(io) {
 
   // upon connection send all rooms avaiilable to the current user
   user.on("connection", nsSocket => {
-    console.log("new socket connected to user");    
-    var user_id = nsSocket.handshake.query.id;
-    userModel = new User();
-    if (user_id) {
-      userModel.loadRooms(user_id, function(error, response) {
-        if (!error) {
-          nsSocket.emit("nsRoomList", response.rooms);
-        } else {
-          nsSocket.emit("nsRoomList", response.rooms);
-        }
-      });
-    } else {
-      nsSocket.emit("nsRoomList", []);
-    }
+    console.log(`new socket connected to user ${nsSocket.id}`);    
+    // var user_id = nsSocket.handshake.query.id;
+    // userModel = new User();
+    // if (user_id) {
+    //   userModel.loadRooms(user_id, function(error, response) {
+    //     if (!error) {
+    //       nsSocket.emit("nsRoomList", response.rooms);
+    //     } else {
+    //       nsSocket.emit("nsRoomList", response.rooms);
+    //     }
+    //   });
+    // } else {
+    //   nsSocket.emit("nsRoomList", []);
+    // }
 
     // console.log(`${nsSocket.id} has join ${namespace.endpoint}`)
     // a socket has connected to one of our chatgroup namespaces.
     // send that ns gorup info back
-
+    console.log(nsSocket.rooms);
     nsSocket.on("joinRoom", (roomToJoin, numberOfUsersCallback) => {
-      console.log(`request to join room.. ${roomToJoin}`);
       // deal with history... once we have it
       const roomToLeave = Object.keys(nsSocket.rooms)[1];
       nsSocket.leave(roomToLeave);
-      updateUsersInRoom("/", roomToLeave, io);
+      updateUsersInRoom("/user", roomToLeave, io);
       nsSocket.join(roomToJoin);
 
       // getting the history of the room to join
       RoomMessages.getHistory({ roomId: roomToJoin }, function(err, results) {
         if (!err) {
+          console.log("got history---------------------------------");
           nsSocket.emit("historyCatchUp", results);
           updateUsersInRoom(namespaces.user_endpoint, roomToJoin, io);
         } else {
+          console.log("got error---------------------------------");
           nsSocket.emit("historyCatchUp", []);
-          updateUsersInRoom(namespaces.user_endpoint, roomToJoin, io);
+          // updateUsersInRoom(namespaces.user_endpoint, roomToJoin, io);
         }
       });
-      updateUsersInRoom(namespaces.user_endpoint, roomToJoin, io);
+      // updateUsersInRoom(namespaces.user_endpoint, roomToJoin, io);
     });
 
     nsSocket.on("newMessageToServer", msg => {
+      console.log("reached the newMessageToServer");
       // Send this message to ALL the sockets that are in the room that THIS socket is in.
       // how can we find out what rooms THIS socket is in?
       // console.log(nsSocket.rooms)
       // the user will be in the 2nd room in the object list
       // this is because the socket ALWAYS joins its own room on connection
       // get the keys
+      console.log(roomId);
       var roomId = Object.keys(nsSocket.rooms)[1];
       var fullMsg = {
         roomId: roomId,
-        message: msg.text,
-        senderId: msg.senderId,
+        message: (msg.text ? msg.text: false),
+        senderId: (msg.senderId ? msg.senderId : false),
         created_date: Date.now(),
         status: 1,
-        type: msg.type ? msg.type : 1
+        type: (msg.type ? msg.type : 1)
       };
-      console.log(fullMsg);
       RoomMessages.addMessage(fullMsg, function(err, response) {
+        console.log(response);
         if (!err) {
           user.to(roomId).emit("messageToClients", response);
         } else {
@@ -83,7 +86,7 @@ module.exports = function(io) {
 
   });
 };
-
+ 
 function updateUsersInRoom(namespace, roomToJoin, io) {
   // Send back the number of users in this room to ALL sockets connected to this room
   io.of(namespace.endpoint)
