@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-var fs = require("fs");
+var User = require("./User");
 
 ROOM_STATUS_PUBLIC = "public";
 ROOM_STATUS_PRIVATE = "private";
@@ -21,6 +21,7 @@ var RoomSchema = new mongoose.Schema({
 });
 
 RoomSchema.statics.createRoom = function(postData, callback) {
+  let self = this;
   if (!postData) {
     callback(true, { error: "Missing required paramaeters" });
   } else {
@@ -50,7 +51,20 @@ RoomSchema.statics.createRoom = function(postData, callback) {
             });
           } else {
             if (roomSchema.save()) {
-              callback(false, { data: roomSchema });
+              if (roomSchema.status == "public") {
+                self.getAllUsers(function(err, results) {
+                  if (!err && results.length > 0) {
+                    results.map(user => {
+                      var userSchema = new require("../models/User")(user);
+                      userSchema.rooms.push(roomSchema);
+                      userSchema.save();
+                    });
+                    callback(false, { data: roomSchema });
+                  } else {
+                    callback(false, { data: roomSchema });
+                  }
+                });
+              }
             } else {
               callback(true, { error: "Error processing your request" });
             }
@@ -59,6 +73,13 @@ RoomSchema.statics.createRoom = function(postData, callback) {
       });
     }
   }
+};
+
+RoomSchema.statics.getAllUsers = function(callback) {
+  var User = require("../models/User");
+  User.find({}, function(err, results) {
+    callback(err, results);
+  });
 };
 
 RoomSchema.statics.validate = function(post) {
