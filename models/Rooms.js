@@ -4,19 +4,48 @@ var User = require("./User");
 ROOM_STATUS_PUBLIC = "public";
 ROOM_STATUS_PRIVATE = "private";
 
+ROOM_PLAN_USD = "USD";
+ROOM_PLAN_EURO = "EUR";
+
+ROOM_ACCESS_ALL = 1;
+ROOM_ACCESS_AMI = 2;
+ROOM_ACCESS_AMIP = 3;
+
 var RoomSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true
   },
-  created_date: {
-    type: Date,
+  description: {
+    type: String,
     required: true
   },
   status: {
     type: String,
     enum: [ROOM_STATUS_PUBLIC, ROOM_STATUS_PRIVATE],
     required: true
+  },
+  post_access: {
+    type: Number,
+    enum: [ROOM_ACCESS_ALL, ROOM_ACCESS_AMI, ROOM_ACCESS_AMIP],
+    required: true
+  },
+  created_date: {
+    type: Date,
+    required: true
+  },
+  is_visible: {
+    type: Boolean,
+    required: false
+  },
+  plan: {
+    type: String,
+    enum: [ROOM_PLAN_USD, ROOM_PLAN_EURO],
+    required: false
+  },
+  coupons: {
+    type: Array,
+    required: false
   }
 });
 
@@ -27,8 +56,10 @@ RoomSchema.statics.createRoom = function(postData, callback) {
   } else {
     roomSchema = new Room({
       title: postData.title,
+      description: postData.description,
       status: postData.status,
-      created_date: new Date()
+      post_access: (postData.post_access ? postData.post_access : ROOM_ACCESS_ALL),
+      created_date: new Date(),
     });
     var error = roomSchema.validateSync();
     // valildations failed
