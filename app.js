@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+const { Pool } = require('pg');
 const fileUpload = require("express-fileupload");
 
 CONFIG = require("./config/config"); // Injecting Our Configuration

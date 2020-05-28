@@ -1,7 +1,11 @@
 var express = require("express");
 var User = require("../models/User");
 var Rooms = require("../models/Rooms");
-var Widget = require("../models/Widget");
+// var Widget = require("../models/Widget");
+var Widget = require("../models/WidgetPG");
+// var Plan = require("../models/Plan");
+var Plans = require('../models/PlansPG');
+var RegFields = require('../models/RegFieldsPG');
 var router = express.Router();
 
 /* GET home page. */
@@ -74,58 +78,31 @@ router.post("/api/rooms", function(req, res, next) {
   });
 });
 
-router.post("/api/createwidget", function(req, res, next) {
-  if (req.body) {
-    Widget.createWidget(req.body, function(err, response) {
-      if (err) {
-        return res.send({ success: false, error: response.error });
-      } else {
-        return res.send({ success: true, data: response.data });
-      }
-    });
-  } else {
-    res.send({ success: false, error: "Missing required parameters" });
-  }
-});
+/* Widget APIs */
+router.get("/api/getWidgets", Widget.getWidgets);
+router.get("/api/getActiveWidgets", Widget.getActiveWidgets);
+router.post("/api/createWidget", Widget.createWidget);
+router.put("/api/updateWidget", Widget.updateWidget);
+router.put("/api/deactivateWidget", Widget.updateStatus);
+router.put("/api/activateWidget", Widget.updateStatus);
+router.delete("/api/deleteWidget", Widget.deleteWidget);
 
-router.get("/api/getWidgets", function(req, res, next) {
-  Widget.getAllWidgets(function(err, response) {
-    if (err) {
-      return res.send({ success: false, error: response.error });
-    } else {
-      return res.send({ success: true, data: response.data });
-    }
-  });
-});
+/* Plan APIs */
+router.get("/api/getPlans", Plans.getPlans);
+router.get("/api/getActivePlans", Plans.getActivePlans);
+router.post("/api/createPlan", Plans.createPlan);
+router.put("/api/updatePlan", Plans.updatePlan);
+router.put("/api/deactivatePlan", Plans.updateStatus);
+router.put("/api/activatePlan", Plans.updateStatus);
+router.delete("/api/deletePlan", Plans.deletePlan);
 
-router.get("/api/getActiveWidgets", function(req, res, next) {
-  Widget.getActiveWidgets(function(err, response) {
-    if (err) {
-      return res.send({ success: false, error: response.error });
-    } else {
-      return res.send({ success: true, data: response.data });
-    }
-  });
-});
-
-router.post("/api/deactivateWidget", function(req, res, next) {
-  Widget.updateStatus(req.body, function(err, response) {
-    if (err) {
-      return res.send({ success: false, error: response.error });
-    } else {
-      return res.send({ success: true, data: response.data });
-    }
-  });
-});
-
-router.post("/api/activateWidget", function(req, res, next) {
-  Widget.updateStatus(req.body, function(err, response) {
-    if (err) {
-      return res.send({ success: false, error: response.error });
-    } else {
-      return res.send({ success: true, data: response.data });
-    }
-  });
-});
+/* RegistrationFields APIs */
+router.get("/api/getRegFields", RegFields.getRegFields);
+router.get("/api/getActiveRegFields", RegFields.getActiveRegFields);
+router.post("/api/createRegField", RegFields.createRegField);
+router.put("/api/updateRegField", RegFields.updateRegField);
+router.put("/api/deactivateRegField", RegFields.updateStatus);
+router.put("/api/activateRegField", RegFields.updateStatus);
+router.delete("/api/deleteRegField", RegFields.deleteRegField);
 
 module.exports = router;

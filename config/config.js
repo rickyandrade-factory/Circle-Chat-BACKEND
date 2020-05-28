@@ -1,5 +1,6 @@
 var path = require('path');
 var fs = require('fs');
+const { Pool } = require('pg');
 var config = JSON.parse(fs.readFileSync(path.join(__dirname, "/config.json"), 'utf8'));
 var CONFIG = {};
 CONFIG.ENV = (process.env.NODE_ENV || 'development');
@@ -16,6 +17,18 @@ CONFIG.CATEGORY_DEFAULT_IMAGE = 'uploads/default/category.jpg';
 CONFIG.ENCRYPTION_MODE = 0;
 CONFIG.SCRIPT_NAME = 'encrption';
 CONFIG.GCM_KEY_USER = '';
+
+const pool = new Pool({
+    user: config.postgres.user,
+    host: config.postgres.host,
+    database: config.postgres.database,
+    password: config.postgres.password,
+    port: config.postgres.port
+});
+
+CONFIG.POOL = pool;
+
+pool.connect();
 
 //Export Module
 module.exports = CONFIG;
