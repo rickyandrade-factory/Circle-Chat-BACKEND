@@ -2,74 +2,176 @@ var config = require("../config/config");
 
 let table = "widgets";
 
-const getWidgets = (request, response) => {
+const getWidgets = (request, callback) => {
     config.POOL.query('SELECT * FROM '+table+' ORDER BY id ASC', (error, results) => {
         if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+            callback(true, { 
+                status: 401, 
+                data: error
+            });
         }
-        response.status(200).json({"success" : true, "data" : results.rows})
+        callback(false, { 
+            status: 200, 
+            data: results.rows
+        });
     })
 }
 
-const getActiveWidgets = (request, response) => {
+const getActiveWidgets = (request, callback) => {
     config.POOL.query("SELECT * FROM "+table+" WHERE status='1' ORDER BY id ASC", (error, results) => {
         if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+            callback(true, { 
+                status: 401, 
+                data: error
+            });
         }
-        response.status(200).json({"success" : true, "data" : results.rows})
+        callback(false, { 
+            status: 200, 
+            data: results.rows
+        });
     })
 }
 
-const createWidget = (request, response) => {
-    config.POOL.query("INSERT INTO "+table+" (name, link, status, position, description) VALUES ('"+request.body.name+"', '"+request.body.link+"', '"+request.body.status+"', '"+request.body.position+"', '"+request.body.description+"')", (error, results) => {
+const createWidget = (request, callback) => {
+    var insertString = "";
+    if(
+        !request.body.name || request.body.name=="" || 
+        !request.body.link || request.body.link=="" || 
+        !request.body.position || request.body.position=="" ||
+        !request.body.status || request.body.status==""
+    ) {
+        callback(true, { 
+            status: 400, 
+            data: { 
+                message: "Please enter all required fields." 
+            }
+        });
+    } else {
+        let name = request.body.name;
+        let link = request.body.link;
+        let position = request.body.position;
+        let status = request.body.status;
+        let description = request.body.description;
+        insertString = "(name, link, status, position, description) VALUES ('"+name+"', '"+link+"', '"+status+"', '"+position+"', '"+description+"' )";
+    }
+    config.POOL.query("INSERT INTO "+table+" "+insertString+" RETURNING id", (error, results) => {
         if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+            callback(true, { 
+                status: 401, 
+                data: error
+            });
         }
-        response.status(200).json({"success" : true, "message": "Record created"});
+        callback(false, { 
+            status: 200, 
+            data: {
+                message: "Record created."
+            }
+        });
     })
 }
 
-const updateWidget = (request, response) => {
-    config.POOL.query("UPDATE "+table+" SET name = '"+request.body.name+"', link = '"+request.body.link+"', status = '"+request.body.status+"', position = '"+request.body.position+"', description = '"+request.body.description+"' WHERE id =  '"+request.body.id+"'", (error, results) => {
+const updateWidget = (request, callback) => {
+    var updateString = "";
+    if(
+        !request.body.name || request.body.name=="" || 
+        !request.body.link || request.body.link=="" || 
+        !request.body.position || request.body.position=="" ||
+        !request.body.status || request.body.status==""
+    ) {
+        callback(true, { 
+            status: 400, 
+            data: { 
+                message: "Please enter all required fields." 
+            }
+        });
+    } else {
+        let name = request.body.name;
+        let link = request.body.link;
+        let position = request.body.position;
+        let status = request.body.status;
+        let description = request.body.description;
+        updateString = "name = '"+name+"', link = '"+link+"', status = '"+status+"', position = '"+position+"'";
+        if (!request.body.status || request.body.status=="") {
+            updateString += ", description = '"+description+"' ";
+        }
+    }
+    config.POOL.query("UPDATE "+table+" SET "+updateString+" WHERE id =  '"+request.body.id+"'", (error, results) => {
         if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+            callback(true, { 
+                status: 401, 
+                data: error
+            });
         }
-        response.status(200).json({"success" : true, "message": "Record updated"});
+        callback(false, { 
+            status: 200, 
+            data: {
+                message: "Record updated."
+            }
+        });
     })
 }
 
-const updateStatus = (request, response) => {
-    var status = "";
+const updateStatus = (request, callback) => {
+    var status = request.body.status;
     var message = "";
-    var id = request.body.id;
-    if(request.route.path=="/api/deactivateWidget"){
-        status = 0;
-        message = "Widget Deactivated successfully";
-    }
-    if(request.route.path=="/api/activateWidget"){
-        status = 1;
-        message = "Widget Activated successfully";
-    }
-    config.POOL.query("UPDATE "+table+" SET status = '"+status+"' WHERE id = '"+id+"' ", (error, results) => {
-        if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+    if(
+        !request.body.id || request.body.id==""
+    ) {
+        callback(true, { 
+            status: 400, 
+            data: { 
+                message: "Please enter all required fields." 
+            }
+        });
+    } else {
+        var id = request.body.id;
+        if(status == 0){
+            message = "Widget Deactivated successfully";
         }
-        response.status(200).json({"success" : true, "message": message});
-    });
+        if(status == 1){
+            message = "Widget Activated successfully";
+        }
+        config.POOL.query("UPDATE "+table+" SET status = '"+status+"' WHERE id = '"+id+"' ", (error, results) => {
+            if (error!="" && error!==undefined) {
+                callback(true, { 
+                    status: 401, 
+                    data: error
+                });
+            }
+            callback(false, { 
+                status: 200, 
+                data: {
+                    message: message
+                }
+            });
+        });
+    }
 }
 
-const deleteWidget = (request, response) => {
+const deleteWidget = (request, callback) => {
+    if(
+        !request.body.id || request.body.id==""
+    ) {
+        callback(true, { 
+            status: 400, 
+            data: { 
+                message: "Please enter all required fields." 
+            }
+        });
+    }
     config.POOL.query("DELETE FROM "+table+" WHERE id = '"+request.body.id+"' ", (error, results) => {
         if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+            callback(true, { 
+                status: 401, 
+                data: error
+            });
         }
-        response.status(200).json({"success" : true, "message": "Record deleted successfully."})
+        callback(false, { 
+            status: 200, 
+            data: {
+                message: "Record deleted successfully."
+            }
+        });
     });
 }
 

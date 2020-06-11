@@ -2,74 +2,167 @@ var config = require("../config/config");
 
 let table = "plans";
 
-const getPlans = (request, response) => {
+const getPlans = (request, callback) => {
     config.POOL.query('SELECT * FROM '+table+' ORDER BY id ASC', (error, results) => {
         if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+            callback(true, { 
+                status: 401, 
+                data: error
+            });
         }
-        response.status(200).json({"success" : true, "data" : results.rows})
+        callback(false, { 
+            status: 200, 
+            data: results.rows
+        });
     })
 }
 
-const getActivePlans = (request, response) => {
+const getActivePlans = (request, callback) => {
     config.POOL.query("SELECT * FROM "+table+" WHERE status='1' ORDER BY id ASC", (error, results) => {
         if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+            callback(true, { 
+                status: 401, 
+                data: error
+            });
         }
-        response.status(200).json({"success" : true, "data" : results.rows})
+        callback(false, { 
+            status: 200, 
+            data: results.rows
+        });
     })
 }
 
-const createPlan = (request, response) => {
-    config.POOL.query("INSERT INTO "+table+" (name, price, status) VALUES ('"+request.body.name+"', '"+request.body.price+"', '"+request.body.status+"')", (error, results) => {
+const createPlan = (request, callback) => {
+    var insertString = "";
+    if(
+        !request.body.name || request.body.name=="" || 
+        !request.body.price || request.body.price=="" ||
+        !request.body.status || request.body.status==""
+    ) {
+        callback(true, { 
+            status: 400, 
+            data: { 
+                message: "Please enter all required fields." 
+            }
+        });
+    } else {
+        let name = request.body.name;
+        let price = request.body.price;
+        let status = request.body.status;
+        insertString = "(name, price, status) VALUES ('"+name+"', '"+price+"', '"+status+"' )";
+    }
+    config.POOL.query("INSERT INTO "+table+" "+insertString+" RETURNING id", (error, results) => {
         if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+            callback(true, { 
+                status: 401, 
+                data: error
+            });
         }
-        response.status(200).json({"success" : true, "message": "Record created"});
+        callback(false, { 
+            status: 200, 
+            data: {
+                message: "Record created."
+            }
+        });
     })
 }
 
-const updatePlan = (request, response) => {
-    config.POOL.query("UPDATE "+table+" SET name = '"+request.body.name+"', price = '"+request.body.price+"', status = '"+request.body.status+"' WHERE id =  '"+request.body.id+"'", (error, results) => {
+const updatePlan = (request, callback) => {
+    var updateString = "";
+    if(
+        !request.body.name || request.body.name=="" || 
+        !request.body.price || request.body.price=="" ||
+        !request.body.status || request.body.status==""
+    ) {
+        callback(true, { 
+            status: 400, 
+            data: { 
+                message: "Please enter all required fields." 
+            }
+        });
+    } else {
+        let name = request.body.name;
+        let price = request.body.price;
+        let status = request.body.status;
+        updateString = "name = '"+name+"', price = '"+price+"', status = '"+status+"'";
+    }
+    config.POOL.query("UPDATE "+table+" SET "+updateString+" WHERE id =  '"+request.body.id+"'", (error, results) => {
         if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+            callback(true, { 
+                status: 401, 
+                data: error
+            });
         }
-        response.status(200).json({"success" : true, "message": "Record updated"});
+        callback(false, { 
+            status: 200, 
+            data: {
+                message: "Record updated."
+            }
+        });
     })
 }
 
-const updateStatus = (request, response) => {
-    var status = "";
+const updateStatus = (request, callback) => {
+    var status = request.body.status;
     var message = "";
-    var id = request.body.id;
-    if(request.route.path=="/api/deactivatePlan"){
-        status = 0;
-        message = "Plan Deactivated successfully";
-    }
-    if(request.route.path=="/api/activatePlan"){
-        status = 1;
-        message = "Plan Activated successfully";
-    }
-    config.POOL.query("UPDATE "+table+" SET status = '"+status+"' WHERE id = '"+id+"' ", (error, results) => {
-        if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+    if(
+        !request.body.id || request.body.id==""
+    ) {
+        callback(true, { 
+            status: 400, 
+            data: { 
+                message: "Please enter all required fields." 
+            }
+        });
+    } else {
+        var id = request.body.id;
+        if(status == 0){
+            message = "Plan Deactivated successfully";
         }
-        response.status(200).json({"success" : true, "message": message});
-    });
+        if(status == 1){
+            message = "Plan Activated successfully";
+        }
+        config.POOL.query("UPDATE "+table+" SET status = '"+status+"' WHERE id = '"+id+"' ", (error, results) => {
+            if (error!="" && error!==undefined) {
+                callback(true, { 
+                    status: 401, 
+                    data: error
+                });
+            }
+            callback(false, { 
+                status: 200, 
+                data: {
+                    message: message
+                }
+            });
+        });
+    }
 }
 
-const deletePlan = (request, response) => {
+const deletePlan = (request, callback) => {
+    if(
+        !request.body.id || request.body.id==""
+    ) {
+        callback(true, { 
+            status: 400, 
+            data: { 
+                message: "Please enter all required fields." 
+            }
+        });
+    }
     config.POOL.query("DELETE FROM "+table+" WHERE id = '"+request.body.id+"' ", (error, results) => {
         if (error!="" && error!==undefined) {
-            response.status(401).json({"success" : false, "data" : error})
-            throw error
+            callback(true, { 
+                status: 401, 
+                data: error
+            });
         }
-        response.status(200).json({"success" : true, "message": "Record deleted successfully."})
+        callback(false, { 
+            status: 200, 
+            data: {
+                message: "Record deleted successfully."
+            }
+        });
     });
 }
 
