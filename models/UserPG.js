@@ -33,16 +33,13 @@ const getUser = async (request, callback) => {
         }
         /* === */
         if(results.rowCount>0) {
-            await config.POOL.query("SELECT ul.name, uf.value FROM "+table2+" as uf LEFT JOIN "+table3+" as ul ON uf.field_id = ul.id where uf.user_id = '"+userid+"' order by uf.field_id asc", async (error1, results1) => {
-                if(results1.rowCount>0) {
-                    results1.rows.forEach(element => {
-                        results.rows[0][element.name]=element.value;
-                    });
-                }
-                callback(false, {
-                    status: 200, 
-                    data: results.rows
-                });
+            var resData = await getUserDetail(userid);
+            resData.forEach(element => {
+                results.rows[0][removeSpecialChar(element.name)]=element.value;
+            });
+            callback(false, {
+                status: 200, 
+                data: results.rows
             });
         } else {
             callback(false, {
@@ -253,31 +250,24 @@ const updateUser = async (request, callback) => {
             var insertString2 = "";
             var updateString2 = "";
             request.body.userdetail = varUserdetail;
-            await varUserdetail.forEach(async element => {
-                field_id = await element.field_id;
+            varUserdetail.forEach(element => {
+                field_id = element.field_id;
                 value = element.value;
                 if(
                     field_id > 0 && field_id!=""
                 ) { 
-                    await config.POOL.query("SELECT id FROM "+table2+" WHERE user_id = '"+user_id+"' AND field_id = '"+field_id+"' ", async (error, qresult) => {
+                    config.POOL.query("SELECT id FROM "+table2+" WHERE user_id = '"+user_id+"' AND field_id = '"+field_id+"' ", (error, qresult) => {
                         if(qresult.rowCount==0){
                             insertString2 = "(agency_id, user_id, field_id, value) VALUES ('"+agency_id+"', '"+user_id+"', '"+field_id+"', '"+value+"' )";
-                            await config.POOL.query("INSERT INTO "+table2+" "+insertString2+"");
+                            config.POOL.query("INSERT INTO "+table2+" "+insertString2+"");
                         } else {
-                            console.log("UPDATE "+table2+" SET "+updateString2+" WHERE user_id = '"+user_id+"' AND field_id = '"+field_id+"' ");
-                            console.log("±±±±±±±±±±");
-                            updateString2 = "value = '"+value+"' ";
-                            await config.POOL.query("UPDATE "+table2+" SET "+updateString2+" WHERE user_id = '"+user_id+"' AND field_id = '"+field_id+"' ");
+                            updateString2 = "value = '"+element.value+"' ";
+                            config.POOL.query("UPDATE "+table2+" SET "+updateString2+" WHERE user_id = '"+user_id+"' AND field_id = '"+element.field_id+"' ");
                         }
                     });
                 }
             });
         }
-        // delete request.body.userdetail;
-        // callback(false, { 
-        //     status: 200, 
-        //     data: request.body
-        // });
         await config.POOL.query("SELECT * FROM "+table+" WHERE id = '"+user_id+"' ORDER BY id ASC", async (error, results1) => {
             if(results1.rowCount==0) {
                 callback(true, { 
@@ -295,16 +285,13 @@ const updateUser = async (request, callback) => {
             }
             /* === */
             if(results1.rowCount>0) {
-                await config.POOL.query("SELECT ul.name, uf.value FROM "+table2+" as uf LEFT JOIN "+table3+" as ul ON uf.field_id = ul.id where uf.user_id = '"+user_id+"' order by uf.field_id asc", async (error1, results2) => {
-                    if(results2.rowCount>0) {
-                        results2.rows.forEach(element => {
-                            results1.rows[0][element.name]=element.value;
-                        });
-                    }
-                    callback(false, {
-                        status: 200, 
-                        data: results1.rows
-                    });
+                var resData = await getUserDetail(user_id);
+                resData.forEach(element => {
+                    results1.rows[0][removeSpecialChar(element.name)]=element.value;
+                });
+                callback(false, {
+                    status: 200, 
+                    data: results1.rows
                 });
             } else {
                 callback(false, {
@@ -366,6 +353,7 @@ const deleteUser = (request, callback) => {
         });
     }
     config.POOL.query("DELETE FROM "+table+" WHERE id = '"+request.body.id+"' ", (error, results) => {
+        config.POOL.query("DELETE FROM "+table2+" WHERE user_id = '"+request.body.id+"' ");
         if (error!="" && error!==undefined) {
             callback(true, { 
                 status: 401, 
@@ -379,6 +367,18 @@ const deleteUser = (request, callback) => {
             }
         });
     });
+}
+
+function getUserDetail (id) {
+    return new Promise((resolve, reject) => {
+        config.POOL.query("SELECT ul.name, uf.value FROM "+table2+" as uf LEFT JOIN "+table3+" as ul ON uf.field_id = ul.id where uf.user_id = '"+id+"' order by uf.field_id asc", async (error, results) => {
+            return error ? reject(err) : resolve(results.rows);
+        });
+    });
+}
+function removeSpecialChar (string) {
+    string = string.replace(" ", "_").replace(".", "").replace("'", "").replace("-", "_").toLowerCase();
+    return string;
 }
 
 module.exports = {
