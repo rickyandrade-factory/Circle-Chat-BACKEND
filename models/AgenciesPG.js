@@ -1,7 +1,7 @@
 var config = require("../config/config");
 const multer = require("multer");
 const path = require("path");
-const helperIF = require('../helpers/imageFilter');
+// const helperIF = require('../helpers/imageFilter');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {

@@ -1,11 +1,9 @@
-var path = require('path');
-var fs = require('fs');
 const { Pool } = require('pg');
-var config = JSON.parse(fs.readFileSync(path.join(__dirname, "/config.json"), 'utf8'));
 var CONFIG = {};
+console.log(process.env.NODE_ENV, "process.env.NODE_ENV--------------")
 CONFIG.ENV = (process.env.NODE_ENV || 'development');
-CONFIG.PORT = (process.env.VCAP_APP_PORT || config.port);
-CONFIG.DB_URL = 'mongodb://' + config.mongodb.host + ':' + config.mongodb.port + '/' + config.mongodb.database;
+CONFIG.PORT = (process.env.VCAP_APP_PORT || process.env.PORT);
+CONFIG.DB_URL = 'mongodb://' + process.env.MONGO_HOST + ':' + process.env.MONGO_PORT + '/' + process.env.MONGO_DATABASE;
 // CONFIG.DIRECTORY_USERS = config.directory.users;
 CONFIG.DIRECTORY_USERS = './uploads/images/users/';
 CONFIG.DIRECTORY_CATEGORIES = './uploads/images/categories/';
@@ -19,11 +17,11 @@ CONFIG.SCRIPT_NAME = 'encrption';
 CONFIG.GCM_KEY_USER = '';
 
 const pool = new Pool({
-    user: config.postgres.user,
-    host: config.postgres.host,
-    database: config.postgres.database,
-    password: config.postgres.password,
-    port: config.postgres.port
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DATABASE,
+    password: process.env.POSTGRES_PASSWORD,
+    port: process.env.POSTGRES_PORT
 });
 
 CONFIG.POOL = pool;

@@ -1,0 +1,25 @@
+{
+    "dev": {
+        "driver": "pg",
+        "filename": "~/dev.db"
+    },
+    "test": {
+        "driver": "pg",
+        "filename": ":memory:"
+    },
+    "prod": {
+        "driver": "pg",
+        "user": "puneet",
+        "password": "root"
+    },
+    "pg": {
+        "driver": "pg",
+        "user": "puneets",
+        "password": "root",
+        "host": "localhost",
+        "database": "circlechat",
+        "port": "20144",
+        "ssl": "true",
+        "schema": "my_schema"
+    }
+}
