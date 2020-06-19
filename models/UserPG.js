@@ -75,9 +75,9 @@ const loginUser = (request, callback) => {
     config.POOL.query("SELECT * FROM " + table + loginString, (error, results) => {
         if (results.rowCount == 0) {
             callback(true, {
-                status: 404,
+                status: 200,
                 data: {
-                    message: "User not found."
+                    message: "Incorrect email or password"
                 }
             });
         }
@@ -87,21 +87,23 @@ const loginUser = (request, callback) => {
                 data: error
             });
         }
-        if (results.rows[0].status == "0" || results.rows[0].status == 0) {
-            callback(true, {
-                status: 403,
-                data: {
-                    message: "Your account is not active. Please contact admin."
-                }
+        if (results.rowCount > 0) {
+            if (results.rows[0].status == "0" || results.rows[0].status == 0) {
+                callback(true, {
+                    status: 403,
+                    data: {
+                        message: "Your account is not active. Please contact admin."
+                    }
+                });
+            }
+            delete results.rows[0].password;
+            setOnlineAndReturn(results.rows[0], function (err, finalUser) {
+                callback(false, {
+                    status: 200,
+                    data: finalUser
+                });
             });
         }
-        delete results.rows[0].password;
-        setOnlineAndReturn(results.rows[0], function (err, finalUser) {
-            callback(false, {
-                status: 200,
-                data: finalUser
-            });
-        });
     })
 }
 

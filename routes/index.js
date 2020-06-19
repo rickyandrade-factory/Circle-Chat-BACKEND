@@ -747,6 +747,7 @@ router.delete(apiVersion + "/deleteAgencyRegField", verifyToken, function (req, 
 router.post(apiVersion + "/login", function (req, res) {
   UserPG.loginUser(req, function (err, response) {
     if (err) {
+      console.log("response.status----", response);
       return res.status(response.status).send({ success: false, error: response.data });
     } else {
       const user = response.data;
