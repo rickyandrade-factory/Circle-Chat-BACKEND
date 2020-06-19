@@ -10,6 +10,8 @@ var RegFields = require('../models/RegFieldsPG');
 var Agencies = require('../models/AgenciesPG');
 var AgencieRegFields = require('../models/AgencieRegFieldsPG');
 var UserPG = require('../models/UserPG');
+var OffersPG = require('../models/OffersPG');
+var ChatRoomsPG = require('../models/ChatRoomsPG');
 var router = express.Router();
 
 const apiVersion = "/api/v1";
@@ -898,6 +900,81 @@ router.post(apiVersion + "/migrate/users", verifyAdminToken, function (req, res)
   });
 });
 
+/* Offers APIs */
+router.get(apiVersion + "/getOffers", verifyAdminToken, function (req, res) {
+  OffersPG.getOffers(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.post(apiVersion + "/createOffer", verifyAdminToken, function (req, res) {
+  OffersPG.createOffer(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.put(apiVersion + "/updateOffer", verifyAdminToken, function (req, res) {
+  OffersPG.updateOffer(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.delete(apiVersion + "/deleteOffer", verifyAdminToken, function (req, res) {
+  OffersPG.deleteOffer(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+
+/* ChatRoom APIs */
+router.get(apiVersion + "/getChatRooms", verifyAdminToken, function (req, res) {
+  ChatRoomsPG.getChatRooms(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.post(apiVersion + "/createChatRoom", verifyAdminToken, function (req, res) {
+  ChatRoomsPG.createChatRoom(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.put(apiVersion + "/updateChatRoom", verifyAdminToken, function (req, res) {
+  ChatRoomsPG.updateChatRoom(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.delete(apiVersion + "/deleteChatRoom", verifyAdminToken, function (req, res) {
+  ChatRoomsPG.deleteChatRoom(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
 
 /* Admin APIs */
 router.post(apiVersion + "/admin/contacts", verifyAdminToken, function (req, res) {

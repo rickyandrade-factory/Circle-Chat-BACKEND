@@ -1,0 +1,90 @@
+-- Table: offers
+
+-- DROP TABLE offers;
+
+CREATE TABLE offers
+(
+    id bigint NOT NULL DEFAULT nextval('offers_id_seq'::regclass),
+    user_id bigint,
+    chatroom_id bigint,
+    bill_id bigint,
+    is_deleted smallint DEFAULT 0,
+    CONSTRAINT offers_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE offers
+    OWNER to postgres;
+
+-- Index: offer_bill_id
+
+-- DROP INDEX offer_bill_id;
+
+CREATE INDEX offer_bill_id
+    ON offers USING btree
+    (bill_id)
+    TABLESPACE pg_default;
+
+-- Index: offer_chatroom_id
+
+-- DROP INDEX offer_chatroom_id;
+
+CREATE INDEX offer_chatroom_id
+    ON offers USING btree
+    (chatroom_id)
+    TABLESPACE pg_default;
+
+-- Index: offer_is_deleted
+
+-- DROP INDEX offer_is_deleted;
+
+CREATE INDEX offer_is_deleted
+    ON offers USING btree
+    (is_deleted)
+    TABLESPACE pg_default;
+
+-- Index: offer_user_id
+
+-- DROP INDEX offer_user_id;
+
+CREATE INDEX offer_user_id
+    ON offers USING btree
+    (user_id)
+    TABLESPACE pg_default;
+
+===================================================
+
+-- Table: chatrooms
+
+-- DROP TABLE chatrooms;
+
+CREATE TABLE chatrooms
+(
+    id bigint NOT NULL DEFAULT nextval('chatrooms_id_seq'::regclass),
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    description character varying(255) COLLATE pg_catalog."default",
+    type character varying(100) COLLATE pg_catalog."default",
+    is_visible smallint DEFAULT 0,
+    can_post_message character varying(100) COLLATE pg_catalog."default",
+    is_deleted smallint DEFAULT 0,
+    CONSTRAINT chatrooms_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE chatrooms
+    OWNER to postgres;
+
+-- Index: chatrooms_is_deleted
+
+-- DROP INDEX chatrooms_is_deleted;
+
+CREATE INDEX chatrooms_is_deleted
+    ON chatrooms USING btree
+    (is_deleted)
+    TABLESPACE pg_default;
