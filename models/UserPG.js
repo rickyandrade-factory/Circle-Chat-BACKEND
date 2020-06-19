@@ -181,7 +181,7 @@ const createUser = (request, callback) => {
         let password = request.body.password;
         let status = request.body.status;
         var keys = Object.keys(request.body);
-        var columsn = "("+ keys.join(', ') + ")";
+        var columsn = "(" + keys.join(', ') + ")";
         values = "(";
         for (var i = 0; i <= keys.length; i++) {
             request.body[keys[i]]
@@ -432,6 +432,20 @@ const migrateUser = (data, callback) => {
     })
 }
 
+const migrateChatIds = (data, callback) => {
+    UserModel.find(data, function (err, users) {
+        callback(err, users.map((user) => {
+            if (user && user._id) {
+                config.POOL.query("UPDATE " + table + " SET chat_id = '" + user._id + "' WHERE email='" + user.email + "'", async (error, results) => {
+                    if (error != "" && error !== undefined) {
+                        return { status: 200, data: results }
+                    }
+                })
+            }
+        }));
+    })
+}
+
 const getAllUser = async (req, callback) => {
     console.log(req.user);
     await config.POOL.query("SELECT * FROM " + table + " ORDER BY id DESC", async (error, results) => {
@@ -478,7 +492,8 @@ module.exports = {
     updateUser,
     updateStatus,
     deleteUser,
-    migrateUser,
     getAllUser,
-    setOnlineAndReturn
+    setOnlineAndReturn,
+    migrateUser,
+    migrateChatIds,
 }

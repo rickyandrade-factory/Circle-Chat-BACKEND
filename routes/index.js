@@ -20,34 +20,34 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-// router.post("/api/login", function(req, res, next) {
-//   if (req.body) {
-//     User.login(req.body, function(err, response) {
-//       if (err) {
-//         res.send({ success: false, error: response.error });
-//       } else {
-//         res.send({ success: true, data: response.data });
-//       }
-//     });
-//   } else {
-//     res.send({ success: false, error: "Missing required parameters" });
-//   }
-// });
+router.post("/api/login", function(req, res, next) {
+  if (req.body) {
+    User.login(req.body, function(err, response) {
+      if (err) {
+        res.send({ success: false, error: response.error });
+      } else {
+        res.send({ success: true, data: response.data });
+      }
+    });
+  } else {
+    res.send({ success: false, error: "Missing required parameters" });
+  }
+});
 
-// router.post("/api/register", function(req, res, next) {
-//   console.log(req.body);
-//   if (req.body) {
-//     User.register(req.body, function(err, response) {
-//       if (err) {
-//         return res.send({ success: false, error: response.error });
-//       } else {
-//         return res.send({ success: true, data: response.data });
-//       }
-//     });
-//   } else {
-//     res.send({ success: false, error: "Missing required parameters" });
-//   }
-// });
+router.post("/api/register", function(req, res, next) {
+  console.log(req.body);
+  if (req.body) {
+    User.register(req.body, function(err, response) {
+      if (err) {
+        return res.send({ success: false, error: response.error });
+      } else {
+        return res.send({ success: true, data: response.data });
+      }
+    });
+  } else {
+    res.send({ success: false, error: "Missing required parameters" });
+  }
+});
 
 router.post("/api/createroom", function (req, res, next) {
   if (req.body) {
@@ -894,6 +894,12 @@ router.delete(apiVersion + "/deleteUser", verifyToken, function (req, res) {
 
 router.post(apiVersion + "/migrate/users", verifyAdminToken, function (req, res) {
   UserPG.migrateUser({}, function (err, response) {
+    return res.status(200).send({ success: (err ? false : true), data: response });
+  });
+});
+
+router.post(apiVersion + "/migrate/chatids", verifyAdminToken, function (req, res) {
+  UserPG.migrateChatIds({}, function (err, response) {
     return res.status(200).send({ success: (err ? false : true), data: response });
   });
 });
