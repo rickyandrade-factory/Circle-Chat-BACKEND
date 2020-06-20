@@ -12,6 +12,8 @@ var AgencieRegFields = require('../models/AgencieRegFieldsPG');
 var UserPG = require('../models/UserPG');
 var OffersPG = require('../models/OffersPG');
 var ChatRoomsPG = require('../models/ChatRoomsPG');
+var BillingPlansPG = require('../models/BillingPlansPG');
+var CouponsPG = require('../models/CouponsPG');
 var router = express.Router();
 
 const apiVersion = "/api/v1";
@@ -968,6 +970,140 @@ router.put(apiVersion + "/updateChatRoom", verifyAdminToken, function (req, res)
 });
 router.delete(apiVersion + "/deleteChatRoom", verifyAdminToken, function (req, res) {
   ChatRoomsPG.deleteChatRoom(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+
+/* BillingPlans APIs */
+router.get(apiVersion + "/getBillingPlans", verifyAdminToken, function (req, res) {
+  BillingPlansPG.getBillingPlans(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.get(apiVersion + "/getActiveBillingPlans", verifyAdminToken, function (req, res) {
+  BillingPlansPG.getActiveBillingPlans(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.post(apiVersion + "/createBillingPlan", verifyAdminToken, function (req, res) {
+  BillingPlansPG.createBillingPlan(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.put(apiVersion + "/updateBillingPlan", verifyAdminToken, function (req, res) {
+  BillingPlansPG.updateBillingPlan(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.put(apiVersion + "/deactivateBillingPlan", verifyAdminToken, function (req, res) {
+  req.body.status = 0
+  BillingPlansPG.updateStatus(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.put(apiVersion + "/activateBillingPlan", verifyAdminToken, function (req, res) {
+  req.body.status = 1
+  BillingPlansPG.updateStatus(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.delete(apiVersion + "/deleteBillingPlan", verifyAdminToken, function (req, res) {
+  BillingPlansPG.deleteBillingPlan(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+
+/* Coupons APIs */
+router.get(apiVersion + "/getCoupons", verifyAdminToken, function (req, res) {
+  CouponsPG.getCoupons(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.get(apiVersion + "/getActiveCoupons", verifyAdminToken, function (req, res) {
+  CouponsPG.getActiveCoupons(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.post(apiVersion + "/createCoupon", verifyAdminToken, function (req, res) {
+  CouponsPG.createCoupon(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.put(apiVersion + "/updateCoupon", verifyAdminToken, function (req, res) {
+  CouponsPG.updateCoupon(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.put(apiVersion + "/deactivateCoupon", verifyAdminToken, function (req, res) {
+  req.body.status = 0
+  CouponsPG.updateStatus(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.put(apiVersion + "/activateCoupon", verifyAdminToken, function (req, res) {
+  req.body.status = 1
+  CouponsPG.updateStatus(req, function (err, response) {
+    if (err) {
+      return res.status(response.status).send({ success: false, error: response.data });
+    } else {
+      return res.status(response.status).send({ success: true, data: response.data });
+    }
+  });
+});
+router.delete(apiVersion + "/deleteCoupon", verifyAdminToken, function (req, res) {
+  CouponsPG.deleteCoupon(req, function (err, response) {
     if (err) {
       return res.status(response.status).send({ success: false, error: response.data });
     } else {
